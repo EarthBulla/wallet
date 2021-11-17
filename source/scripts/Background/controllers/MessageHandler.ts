@@ -55,7 +55,7 @@ export const messagesHandler = (
       if (message.data && message.data.method) {
         //
       }
-    } else if (message.type === 'ENABLE_REQUEST') {
+    } else if (message.type === 'CONNECT_REQUEST') {
       if (origin && allowed) {
         return Promise.resolve({ id: message.id, result: origin && allowed });
       }
@@ -106,7 +106,7 @@ export const messagesHandler = (
       } else if (method === 'wallet.getAddressMeta') {
         result = mainController.provider.getAddressMeta(origin);
       } else if (
-        method === 'wallet.signMessage' ||
+        method === 'wallet.sign' ||
         method === 'wallet.signRaw'
       ) {
         if (pendingWindow) {
@@ -135,7 +135,7 @@ export const messagesHandler = (
                   windowId
                 );
               } else {
-                result = await mainController.provider.signMessage(
+                result = await mainController.provider.sign(
                   signatureRequest,
                   approvedIdentityJSON,
                   windowId
