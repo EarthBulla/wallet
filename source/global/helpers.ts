@@ -10,7 +10,7 @@ export const shortenAddress = (address: string, startCut = 7, endCut = 4) => {
 };
 
 export const parseBigIntObj = (obj: keyable) =>
-  JSON.parse(stringifyWithBigInt(obj));
+  obj && JSON.parse(stringifyWithBigInt(obj));
 
 export const stringifyWithBigInt = (obj: keyable) =>
   JSON.stringify(obj, (_, value) =>
@@ -24,16 +24,21 @@ https://github.com/Psychedelic/plug/blob/e4242a26f288556ee478ff9f4ac02d375d93c28
 Modified version of parsePrincipalObj that deserializes serialized principal
 */
 
-export const parsePrincipalObj = (data: keyable) => Object.entries(data).reduce((acum, [key, val]) => {
-  const current: keyable = { ...acum };
-  if (Array.isArray(val)) {
-    current[key] = val.map((v) => parsePrincipalObj(v));
-  } else if (val._isPrincipal) {
-    current[key] = Principal.fromUint8Array(new Uint8Array(Object.values(val._arr)));
-  } else if (typeof val === 'object') {
-    current[key] = parsePrincipalObj(val);
-  } else {
-    current[key] = val;
-  }
-  return current;
-}, {});
+export const parsePrincipalObj = (data: keyable): keyable =>
+  typeof data === 'object'
+    ? Array.isArray(data)
+      ? data.map((object) => parsePrincipalObj(object))
+      : Object.entries(data).reduce((acum, [key, val]) => {
+          const current: keyable = { ...acum };
+          if (val._isPrincipal) {
+            current[key] = Principal.fromUint8Array(
+              new Uint8Array(Object.values(val._arr))
+            );
+          } else if (typeof val === 'object') {
+            current[key] = parsePrincipalObj(val);
+          } else {
+            current[key] = val;
+          }
+          return current;
+        }, {})
+    : data;
