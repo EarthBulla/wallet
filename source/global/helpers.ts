@@ -9,12 +9,21 @@ export const shortenAddress = (address: string, startCut = 7, endCut = 4) => {
   );
 };
 
-export const parseBigIntObj = (obj: keyable) =>
+export const parseObjWithOutBigInt = (obj: keyable) =>
   obj && JSON.parse(stringifyWithBigInt(obj));
+
+export const parseObjWithBigInt = (obj: keyable) =>
+  obj &&
+  JSON.parse(stringifyWithBigInt(obj), (_, value) => {
+    if (typeof value === 'string' && value.startsWith('BigInt:')) {
+      return BigInt(value.substr(7));
+    }
+    return value;
+  });
 
 export const stringifyWithBigInt = (obj: keyable) =>
   JSON.stringify(obj, (_, value) =>
-    typeof value === 'bigint' ? value.toString() : value
+    typeof value === 'bigint' ? 'BigInt:' + value.toString() : value
   );
 
 /* 

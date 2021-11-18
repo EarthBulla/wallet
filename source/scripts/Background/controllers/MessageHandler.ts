@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 import { browser, Runtime } from 'webextension-polyfill-ts';
-import { parseBigIntObj } from '~global/helpers';
+import { parseObjWithOutBigInt } from '~global/helpers';
 import { IMainController } from '../types/IMainController';
 
 type Message = {
@@ -142,7 +142,7 @@ export const messagesHandler = (
                 );
               }
 
-              const parsedResult = parseBigIntObj(result);
+              const parsedResult = parseObjWithOutBigInt(result);
               port.postMessage({
                 id: message.id,
                 data: { result: parsedResult },

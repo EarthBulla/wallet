@@ -1,6 +1,6 @@
 import { EventEmitter } from 'events';
 import { browser, Runtime } from 'webextension-polyfill-ts';
-import { parseBigIntObj, stringifyWithBigInt } from '~global/helpers';
+import { parseObjWithOutBigInt, stringifyWithBigInt } from '~global/helpers';
 
 export class Script {
   private emitter = new EventEmitter();
@@ -42,11 +42,11 @@ export class Script {
           });
         }
 
-        console.log('Script - ', id, type, data);
+        //console.log('Script - ', id, type, parseObjWithOutBigInt(data));
         this.backgroundPort.postMessage({
           id,
           type,
-          data: parseBigIntObj(data),
+          data: parseObjWithOutBigInt(data),
         });
       },
       false
