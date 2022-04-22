@@ -67,7 +67,7 @@ const AddNetwork = ({
     <div className={styles.page}>
       <Header
         type={'wallet'}
-        text={'Add a Network'}
+        text={'Add a Current Network'}
       ><div className={styles.empty} /></Header>
       <div className={styles.container}>
         <div className={styles.earthInputCont}>
