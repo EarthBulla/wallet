@@ -1,19 +1,4 @@
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: transparent;
-  // border-radius: 8px;
-}
  
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: rgba(8, 25, 39, 0.7);
-  opacity: 0.6; 
-  border-radius: 5px; 
-}
 .page {
   display: block;
   background: url('../../../../assets/images/bg_mnemonic.png');
